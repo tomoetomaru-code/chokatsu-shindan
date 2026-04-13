@@ -42,7 +42,7 @@ const RESULTS: Record<ResultType, { icon:string; name:string; badge:string; sub:
   mix: { icon:"🎲", name:"気まぐれ型", badge:"腸内フローラの不安定さが痩せにくさの原因", sub:"体重・便通・体調が日によってバラつきやすいタイプ。\n腸内フローラの多様性が低く、代謝が安定しにくい状態です。", desc:"腸内フローラの多様性が低下すると、腸の反応が不安定になり体重も増えたり減ったりを繰り返します。発酵食品と食物繊維をセットで摂り続けることで善玉菌の種類が増え、代謝が安定してきます。", actions:["発酵食品×食物繊維のセット摂取（納豆＋海藻・味噌汁＋野菜）を毎食意識する","食事・睡眠・起床の時間を一定にして腸のリズムを整える","植物性発酵食品（納豆・味噌・ぬか漬け）を毎日1種類は食べる"], pdf:"気まぐれ型専用 腸活改善ガイドPDF" },
 };
 
-const LINE_URL = "https://line.me/R/ti/p/XXXXXXXXXX";
+const LINE_URL = "https://line.me/R/ti/p/TzDjpAxf";
 type Screen = 'start' | 'question' | 'loading' | 'result';
 
 export default function Home() {
