@@ -42,7 +42,7 @@ const RESULTS: Record<ResultType, { icon:string; name:string; badge:string; sub:
   mix: { icon:"🎲", name:"気まぐれ型", badge:"腸内フローラの不安定さが痩せにくさの原因", sub:"体重・便通・体調が日によってバラつきやすいタイプ。\n腸内フローラの多様性が低く、代謝が安定しにくい状態です。", desc:"腸内フローラの多様性が低下すると、腸の反応が不安定になり体重も増えたり減ったりを繰り返します。発酵食品と食物繊維をセットで摂り続けることで善玉菌の種類が増え、代謝が安定してきます。", actions:["発酵食品×食物繊維のセット摂取（納豆＋海藻・味噌汁＋野菜）を毎食意識する","食事・睡眠・起床の時間を一定にして腸のリズムを整える","植物性発酵食品（納豆・味噌・ぬか漬け）を毎日1種類は食べる"], pdf:"気まぐれ型専用 腸活改善ガイドPDF" },
 };
 
-const LINE_URL = "https://line.me/R/ti/p/TzDjpAxf";
+const LINE_URL = "https://lin.ee/TzDjpAxf";
 type Screen = 'start' | 'question' | 'loading' | 'result';
 
 export default function Home() {
@@ -85,11 +85,50 @@ export default function Home() {
   const pDia = Math.round(scores.dia / total * 100);
   const pMix = Math.round(scores.mix / total * 100);
 
+  // サブタイプ計算
+  const ranked = (['gas','con','dia','mix'] as ResultType[]).sort((a,b)=>scores[b]-scores[a]);
+  const topType = ranked[0];
+  const subType = ranked[1];
+  const topScore = scores[topType] || 0;
+  const subScore = scores[subType] || 0;
+  const showSub = result !== null && subScore > 0 && (topScore - subScore) < topScore * 0.4;
+
+  const SUBTYPE_MSG: Record<string,string> = {
+    gas_con:'食後のガスに加え、腸の動きが遅い傾向もあります。',
+    gas_dia:'食後のガスに加え、ストレスの影響も受けやすい傾向があります。',
+    gas_mix:'食後のガスに加え、体調のばらつきも気になります。',
+    con_gas:'腸のためこみに加え、ガスやむくみも起きやすい傾向があります。',
+    con_dia:'腸のためこみに加え、ストレスで食欲が乱れやすい傾向もあります。',
+    con_mix:'腸のためこみに加え、体重が安定しにくい傾向もあります。',
+    dia_gas:'ストレス過食に加え、食後のガスも気になる傾向があります。',
+    dia_con:'ストレス過食に加え、腸の動きが遅い傾向もあります。',
+    dia_mix:'ストレス過食に加え、体調のばらつきも気になります。',
+    mix_gas:'体調のばらつきに加え、食後のガスも気になる傾向があります。',
+    mix_con:'体調のばらつきに加え、腸のためこみも見られます。',
+    mix_dia:'体調のばらつきに加え、ストレスの影響も受けやすい傾向があります。',
+  };
+
+  // くるみSVGアイコン
+  const WalnutIcon = ({size}: {size: number}) => (
+    <svg width={size} height={size} viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="36" cy="42" rx="24" ry="21" fill="#C8955A"/>
+      <path d="M36 21C36 21 24 24 21 33C18 42 21 54 27 58" stroke="#8B5E3C" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      <path d="M36 21C36 21 48 24 51 33C54 42 51 54 45 58" stroke="#8B5E3C" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      <path d="M36 21L36 58" stroke="#8B5E3C" strokeWidth="3" strokeLinecap="round"/>
+      <path d="M22 38C27 35.5 33 37 36 39C39 37 45 35.5 50 38" stroke="#8B5E3C" strokeWidth="2" strokeLinecap="round" fill="none"/>
+      <path d="M30 18C30 13 33 10 36 10C39 10 42 13 42 18" stroke="#5C8A3C" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
+      <ellipse cx="36" cy="19" rx="5" ry="3" fill="#7AB648"/>
+      <ellipse cx="39" cy="17" rx="3" ry="2" fill="#5C8A3C"/>
+    </svg>
+  );
+
   return (
     <div className="min-h-screen" style={{background:'#F9F5EF',fontFamily:"'Noto Sans JP',sans-serif"}}>
       <header className="bg-white sticky top-0 z-50 border-b-2" style={{borderColor:'#B7E4C7'}}>
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center text-xl" style={{background:'#2D6A4F'}}>🌰</div>
+          <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden" style={{background:'#2D6A4F'}}>
+            <svg width="26" height="26" viewBox="0 0 72 72" fill="none"><ellipse cx="36" cy="42" rx="24" ry="21" fill="#C8955A"/><path d="M36 21C36 21 24 24 21 33C18 42 21 54 27 58" stroke="#8B5E3C" strokeWidth="2.5" strokeLinecap="round" fill="none"/><path d="M36 21C36 21 48 24 51 33C54 42 51 54 45 58" stroke="#8B5E3C" strokeWidth="2.5" strokeLinecap="round" fill="none"/><path d="M36 21L36 58" stroke="#8B5E3C" strokeWidth="3" strokeLinecap="round"/><path d="M22 38C27 35.5 33 37 36 39C39 37 45 35.5 50 38" stroke="#8B5E3C" strokeWidth="2" strokeLinecap="round" fill="none"/><ellipse cx="36" cy="19" rx="5" ry="3" fill="#7AB648"/><ellipse cx="39" cy="17" rx="3" ry="2" fill="#5C8A3C"/></svg>
+          </div>
           <div>
             <div className="font-bold text-sm" style={{color:'#2D6A4F'}}>腸内タイプ診断</div>
             <div className="text-xs" style={{color:'#6B6B6B'}}>くるみの腸活ラボ</div>
@@ -112,9 +151,11 @@ export default function Home() {
         {screen === 'start' && (
           <div>
             <div className="text-center py-8">
-              <div className="text-7xl mb-4">🌰</div>
-              <h1 className="text-2xl font-bold mb-3 leading-snug" style={{color:'#2D6A4F'}}>あなたの腸内タイプは<br/>どれですか？</h1>
-              <p className="text-sm leading-relaxed mb-6" style={{color:'#6B6B6B'}}>「食べる量を減らしても痩せない」のは<br/>腸内環境のタイプが原因かもしれません。<br/>20問の質問でタイプを特定します。</p>
+              <div className="flex justify-center mb-4">
+                <WalnutIcon size={72} />
+              </div>
+              <h1 className="text-2xl font-bold mb-3 leading-snug" style={{color:'#2D6A4F'}}>あなたが痩せにくい原因は<br/>腸のタイプにあった</h1>
+              <p className="text-sm leading-relaxed mb-6" style={{color:'#6B6B6B'}}>食べる量を減らしても痩せないのは<br/>意志の問題じゃありません。<br/>20問で「あなたの腸タイプ」を特定します。</p>
             </div>
             <div className="grid grid-cols-3 gap-2 mb-6">
               {[['📝','20問','質問数'],['⏱','約5分','所要時間'],['🔬','4タイプ','判定結果']].map(([icon,val,label])=>(
@@ -152,7 +193,12 @@ export default function Home() {
               ))}
             </div>
             <div className="flex gap-2">
-              {current > 0 && <button onClick={()=>setCurrent(c=>c-1)} className="flex-1 py-3.5 rounded-2xl border-2 text-sm" style={{borderColor:'#B7E4C7',color:'#6B6B6B',background:'#FFFFFF'}}>← 戻る</button>}
+              <button
+                onClick={()=>setCurrent(c=>c-1)}
+                className="flex-1 py-3.5 rounded-2xl border-2 text-sm transition-all"
+                style={{borderColor:'#B7E4C7',color: current===0 ? '#D0D0D0' : '#6B6B6B',background:'#FFFFFF',cursor:current===0?'not-allowed':'pointer',opacity:current===0?0.4:1}}>
+                ← 戻る
+              </button>
               <button onClick={goNext} className="py-3.5 rounded-2xl text-sm font-bold transition-all" style={{flex:2,background:answers[current]!==-1?'#2D6A4F':'#B7E4C7',color:'white',cursor:answers[current]!==-1?'pointer':'not-allowed'}}>
                 {current===19?'結果を見る ✓':'次へ →'}
               </button>
@@ -169,7 +215,19 @@ export default function Home() {
 
         {screen === 'result' && result && (()=>{
           const r = RESULTS[result];
-          const bars: [string,string,number][] = [['💨','膨らみ型',pGas],['🧱','ためこみ型',pCon],['🌊','敏感型',pDia],['🔄','気まぐれ型',pMix]];
+          const maxScore = Math.max(pGas,pCon,pDia,pMix) || 1;
+          const getBarColor = (key: ResultType) => {
+            if (result === key) return '#2D6A4F';
+            if (showSub && ranked[1] === key) return '#52B788';
+            return '#B7E4C7';
+          };
+          const bars: [string,string,number,string][] = [
+            ['🫧','膨らみ型',pGas,getBarColor('gas')],
+            ['🪨','ためこみ型',pCon,getBarColor('con')],
+            ['🌊','敏感型',pDia,getBarColor('dia')],
+            ['🎲','気まぐれ型',pMix,getBarColor('mix')],
+          ];
+          const subMsg = showSub ? SUBTYPE_MSG[`${result}_${subType}`] : '';
           return (
             <div>
               <div className="bg-white rounded-3xl overflow-hidden shadow-md mb-4">
@@ -178,19 +236,29 @@ export default function Home() {
                   <div className="text-6xl mb-3">{r.icon}</div>
                   <h2 className="text-2xl font-bold mb-2" style={{color:'#2D6A4F'}}>あなたは「{r.name}」です</h2>
                   <p className="text-sm leading-relaxed" style={{color:'#6B6B6B'}}>{r.sub.split('\n').map((line,i)=><span key={i}>{line}<br/></span>)}</p>
+                  {showSub && (
+                    <div className="inline-block mt-3 px-3 py-1 rounded-full text-sm font-bold" style={{background:'#E8F5EE',color:'#2D6A4F',border:'1px solid #B7E4C7'}}>
+                      ＋ {RESULTS[subType].name}の傾向あり
+                    </div>
+                  )}
                 </div>
                 <div className="px-6 pb-6">
+                  {showSub && subMsg && (
+                    <div className="rounded-xl p-3 mb-4 text-xs leading-relaxed" style={{background:'#FFF8E7',color:'#7A5C00'}}>
+                      🔍 {subMsg}
+                    </div>
+                  )}
                   <div className="text-xs font-bold tracking-widest mb-3 pb-2 border-b-2" style={{color:'#2D6A4F',borderColor:'#B7E4C7'}}>このタイプについて</div>
                   <p className="text-sm leading-relaxed mb-5">{r.desc}</p>
                   <div className="text-xs font-bold tracking-widest mb-3 pb-2 border-b-2" style={{color:'#2D6A4F',borderColor:'#B7E4C7'}}>タイプスコア</div>
                   <div className="space-y-2.5 mb-5">
-                    {bars.map(([icon,label,val])=>(
+                    {bars.map(([icon,label,val,color])=>(
                       <div key={label} className="flex items-center gap-2.5">
-                        <span className="text-sm w-20 flex-shrink-0">{icon} {label}</span>
-                        <div className="flex-1 h-2 rounded-full overflow-hidden" style={{background:'#B7E4C7'}}>
-                          <div className="h-full rounded-full transition-all duration-1000" style={{width:`${val}%`,background:'#2D6A4F'}}/>
+                        <span className="text-sm w-20 flex-shrink-0" style={{fontWeight:label===r.name?700:400}}>{icon} {label}</span>
+                        <div className="flex-1 h-2 rounded-full overflow-hidden" style={{background:'#E8F5EE'}}>
+                          <div className="h-full rounded-full transition-all duration-1000" style={{width:`${Math.round(val/maxScore*100)}%`,background:color}}/>
                         </div>
-                        <span className="text-xs w-9 text-right flex-shrink-0" style={{color:'#6B6B6B'}}>{val}%</span>
+                        <span className="text-xs w-9 text-right flex-shrink-0" style={{color:label===r.name?'#2D6A4F':'#6B6B6B',fontWeight:label===r.name?700:400}}>{val}%</span>
                       </div>
                     ))}
                   </div>
