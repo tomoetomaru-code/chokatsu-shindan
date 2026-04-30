@@ -201,7 +201,30 @@ export default function App() {
             </div>
           )}
 
-          <div style={{ padding: '24px 0 16px' }}>
+          {current > 0 && (
+            <button
+              onClick={() => {
+                const prev = current - 1;
+                const prevScore = QUESTIONS[current - 1].scores[answers[current - 1]];
+                setScores({
+                  gas: scores.gas - prevScore.gas,
+                  con: scores.con - prevScore.con,
+                  dia: scores.dia - prevScore.dia,
+                  mix: scores.mix - prevScore.mix,
+                });
+                const newAnswers = [...answers];
+                newAnswers[current] = -1;
+                setAnswers(newAnswers);
+                setCurrent(prev);
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              style={{ background: 'none', border: 'none', fontSize: 13, color: '#78716c', cursor: 'pointer', padding: '8px 0', textDecoration: 'underline' }}
+            >
+              ← 前の質問に戻る
+            </button>
+          )}
+
+          <div style={{ padding: '16px 0 16px' }}>
             <p style={{ fontSize: 17, fontWeight: 700, color: '#1c1917', lineHeight: 1.6, marginBottom: 24 }}>
               {q.q}
             </p>
@@ -347,7 +370,7 @@ export default function App() {
           </div>
 
           <p style={{ fontSize: 12, textAlign: 'center', color: '#888', lineHeight: 1.7 }}>
-            ※ この診断は医療診断ではありません。<br />心身ともに健康な方を対象としています。その他の方は医療機関にご相談ください。
+            ※ この診断は医療診断ではありません。<br />症状が重い・長引く場合は医療機関にご相談ください。
           </p>
         </div>
       </div>
