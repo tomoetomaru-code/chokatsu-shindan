@@ -95,7 +95,7 @@ function calcResult(scores: Scores): ResultType {
 }
 
 const GREEN = '#2D6A4F';
-const LINE_URL = 'https://lin.ee/YOUR_LINE_URL'; // ← ここにLINE公式アカウントURLを入力
+const LINE_URL = 'https://lin.ee/TzDjpAxf'; // ← ここにLINE公式アカウントURLを入力
 
 export default function App() {
   const [screen, setScreen] = useState<'start' | 'quiz' | 'loading' | 'result'>('start');
@@ -330,7 +330,7 @@ export default function App() {
             </div>
 
             <a
-              href={https://lin.ee/TzDjpAxf}
+              href={LINE_URL}
               style={{ display: 'block', width: '100%', background: GREEN, color: 'white', fontWeight: 700, fontSize: 16, padding: '16px', borderRadius: 14, border: 'none', textAlign: 'center', textDecoration: 'none', cursor: 'pointer', boxShadow: '0 4px 12px rgba(45,106,79,0.3)' }}
             >
               無料で受け取る →
@@ -347,7 +347,7 @@ export default function App() {
           </div>
 
           <p style={{ fontSize: 12, textAlign: 'center', color: '#888', lineHeight: 1.7 }}>
-            ※ この診断は医療診断ではありません。<br />症状が重い・長引く場合は医療機関にご相談ください。
+            ※ この診断は医療診断ではありません。<br />心身ともに健康な方を対象としています。その他の方は医療機関にご相談ください。
           </p>
         </div>
       </div>
