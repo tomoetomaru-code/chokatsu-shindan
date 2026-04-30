@@ -330,7 +330,7 @@ export default function App() {
             </div>
 
             <a
-              href={LINE_URL}
+              href={https://lin.ee/TzDjpAxf}
               style={{ display: 'block', width: '100%', background: GREEN, color: 'white', fontWeight: 700, fontSize: 16, padding: '16px', borderRadius: 14, border: 'none', textAlign: 'center', textDecoration: 'none', cursor: 'pointer', boxShadow: '0 4px 12px rgba(45,106,79,0.3)' }}
             >
               無料で受け取る →
